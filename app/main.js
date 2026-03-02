@@ -2,7 +2,7 @@
 
 import { getUsers, getPostByUser } from './api.js';
 import { renderUsers, renderPostCards, showAlert, hideAlert, setLoading, updateSectionTitle } from './ui.js';
-import * as state from './state.js';
+import { state, postsFilter } from './state.js';
 
 const userSelect  = document.getElementById('user-select');
 const searchInput = document.getElementById('search-input');
@@ -29,7 +29,7 @@ userSelect.addEventListener('change', function () {
 // 3. User types in search → filter without fetching
 searchInput.addEventListener('input', function () {
   state.searchTxt = searchInput.value;
-  renderPostCards(state.postsFilter());
+  renderPostCards(postsFilter());
 });
 
 
@@ -45,7 +45,7 @@ function loadPosts(userId) {
   setLoading(true);
 
   getPostByUser(userId)
-    .then(data => { state.posts = data; renderPostCards(state.postsFilter()); })
+    .then(data => { state.posts = data; renderPostCards(postsFilter());})
     .catch(err  => showAlert('Could not load posts: ' + err.message))
     .finally(   () => setLoading(false));
 }
